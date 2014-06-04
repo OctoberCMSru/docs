@@ -1,64 +1,64 @@
-# Plugin Registration
+# Регистрация плагина
 
-- [Introduction](#introduction)
-- [Registration file](#registration-file)
-- [Routing and initialization](#routing-initialization)
-- [Component registration](#component-registration)
+- [Ознакомление](#introduction)
+- [Регистрация файла](#registration-file)
+- [Роутинг и инициализация](#routing-initialization)
+- [Регистрация компонента](#component-registration)
 - [Extending Twig](#extending-twig)
-- [Widget registration](#widget-registration)
-- [Navigation and permissions](#navigation-permissions)
-- [Backend settings](#backend-settings)
-- [Migrations and version history](#migrations-version-history)
+- [Регистрация виджета](#widget-registration)
+- [Навигация и ограниченияNavigation and permissions](#navigation-permissions)
+- [Настройки Бекэнда](#backend-settings)
+- [Миграции и история версий](#migrations-version-history)
 
-Plugins are the foundation for adding new features to the CMS by extending it. This article describes the component registration. The registration process allows plugins to declare their features such as [components](components) or back-end menus and pages. Some examples of what a plugin can do:
+Плагины - это основа для расширения функционала CMS. Процесс регистрации плагина позволяет определить функции плагина, такие как [components](components) или менюшки и страницы бек энда. Некоторые примеры того, что можно сделать с помощью плагинов:
 
-- Define [components](components).
-- Define user permissions.
-- Add back-end pages, menu items, and forms.
-- Create database table structures and seed data.
-- Alter functionality of the core or other plugins.
-- Provide classes, back-end controllers, views, assets, and other files.
+- Определить [components](components).
+- Определить ограничения пользователя.
+- Добавить в бек энд страницы, менюхи и формы.
+- Создать структуру базы данных и внести в нее данные.
+- Изменить функциональность ядра или других плагинов.
+- Описать классы, контроллеры бек энда, представления, виды, и другие файлы.
 
 <a name="introduction" class="anchor" href="#introduction"></a>
-## Introduction
+## Ознакомление
 
-Plugins reside in the **/plugins** subdirectory of the application directory. An example of a plugin directory structure:
+Все плагины находятся в подпапке **/plugins**. Структура директории плагина выглядит следующим образом:
 
     plugins/
-      acme/              <=== Author name
-        blog/            <=== Plugin name
+      acme/              <=== Имя автора
+        blog/            <=== Имя плагина
           classes/
           components/
           controllers/
           models/
           updates/
           ...
-          Plugin.php     <=== Plugin registration file
+          Plugin.php     <=== Регистрационный файл плагина
 
-Not all plugin directories are required. The only required file is the **Plugin.php** described below. If your plugin provides only a single [component](components), your plugin directory could be much simpler, like this:
+Но не для всех плагинов требуется такая структура. Только те плагины, в которых используется **Plugin.php** нуждаются в такой структуре. Если же Ваш плагин предусматривается только еденичный [component](components), то тогда, структура для такого плагина должна быть гораздо проще, например:
 
     plugins/
-      acme/              <=== Author name
-        blog/            <=== Plugin name
+      acme/              <=== Имя автора
+        blog/            <=== Имя плагина
           components/
-          Plugin.php     <=== Plugin registration file
+          Plugin.php     <=== Регистрационный файл плагина
 
-> **Note**: if you are developing a plugin for the [Marketplace](../help/marketplace), the [updates/version.yaml](#migrations-version-history) file is required.
+> **Помните**: если вы являетесь разработчиком плагина для [Marketplace](../help/marketplace), наличие файла [updates/version.yaml](#migrations-version-history) обязательно.
 
 <a name="namespaces" class="anchor" href="#namespaces"></a>
-### Plugin namespaces
+### Символы в имени плагина
 
-Plugin namespaces are very important, especially if you are going to publish your plugins on the [October Marketplace](http://octobercms.com/plugins). When you register as an author on the Marketplace you will be asked for the author code which should be used as a root namespace for all your plugins. You can specify the author code only once, when you register. The default author code offered by the Marketplace consists of the author first and last name: JohnSmith. The code cannot be changed after you register. All your plugin namespaces should be defined under the root namespace, for example `\JohnSmith\Blog`.
+Символы в именах плагинов очень важны, особенно если планируется, что Ваш плагин будет опубликова на [October Marketplace](http://octobercms.com/plugins). Когда Вы регистрируетесь как автор на Marketplace Вам будет предложено ввести авторский код, который как раз таки будет использован в качестве корневого имени директории для всех Ваших плагинов. Вы можете ввести авторский код только один раз, когда проходите регистрацию. По умолчанию Вам будет предложен авторский код от Marketplace, состоящий из Вашего имени и фамилии: VasyaPupkin. Повторимся, что данный код невозможно будет поменять после регистрации. Все Ваши плагины должны будут быть определены в папке `\VasyaPupkin\Blog`.
 
 <a name="registration-file" class="anchor" href="#registration-file"></a>
-## Registration file
+## Регистрация файла
 
-The **Plugin.php** file, called the *Plugin registration file*, is an initialization script that declares a plugin's core functions and information. Registration files can provide the following:
+Файл **Plugin.php**, названный как *Регистрационный файл плагина*, является скриптом инициализации, который объявляет основные функции и содержит в себе информацию о плагине. Регистрационный файлы могут содержать следующее:
 
-- Information about the plugin, its name, and author
-- Registration methods for extending the CMS
+- Информацию о плагине, его имя и автора
+- Регистрировать методы, для улучшения CMS
 
-Registration scripts should use the plugin namespace. The registration script should define a class with the name `Plugin` that extends the `\System\Classes\PluginBase` class. The only required method of the plugin registration class is the `pluginDetails()`. An example Plugin registration file:
+Регистрационные скрипты должны использовать имена плагинов. Скрипт регистрации должен определить класс с именем `Plugin` который расширяет `\System\Classes\PluginBase` класс. Единственным обязательным методом класса регистрации плагина является  `pluginDetails()`. Пример файла регистрации плагина:
 
     namespace Acme\Blog;
 
@@ -83,14 +83,14 @@ Registration scripts should use the plugin namespace. The registration script sh
     }
 
 <a name="registration-methods" class="anchor" href="#registration-methods"></a>
-### Supported methods
+### Поддерживаемые методы
 
-The following methods are supported in the plugin registration class:
+Следующие методы поддерживаются в регистрационном файле плагина:
 
-- **pluginDetails()** - returns the plugin information.
-- **register()** - register method, called when the plugin is first registered.
-- **boot()** - boot method, called right before the request route.
-- **registerComponents()** - registers any front-end components used by this plugin.
+- **pluginDetails()** - возвращает информацию плагина.
+- **register()** - зарегистрированный метод, вызывается, когда плагин впервые регистрируется.
+- **boot()** - метод загрузки, вызывается непосредственно перед маршрутизацией запроса.
+- **registerComponents()** - регистрирует какой либо фронт эндовский компонент, который будет пользоваться этим плагином.
 - **registerMarkupTags()** - registers additional markup tags that can be used in the CMS.
 - **registerNavigation()** - registers back-end navigation items for this plugin.
 - **registerPermissions()** - registers any back-end permissions used by this plugin.
