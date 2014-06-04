@@ -91,29 +91,29 @@
 - **register()** - зарегистрированный метод, вызывается, когда плагин впервые регистрируется.
 - **boot()** - метод загрузки, вызывается непосредственно перед маршрутизацией запроса.
 - **registerComponents()** - регистрирует какой либо фронт эндовский компонент, который будет пользоваться этим плагином.
-- **registerMarkupTags()** - registers additional markup tags that can be used in the CMS.
-- **registerNavigation()** - registers back-end navigation items for this plugin.
-- **registerPermissions()** - registers any back-end permissions used by this plugin.
-- **registerSettings()** - registers any back-end configuration links used by this plugin.
-- **registerFormWidgets()** - registers any back-end widgets used by this plugin.
-- **registerReportWidgets()** - registers any report widgets, including the dashboard widgets.
+- **registerMarkupTags()** - регистрирует дополнительные теги разметки, который могут быть использованы в CMS.
+- **registerNavigation()** - регистрирует бэк эндовские элементы навигации для этого плагина.
+- **registerPermissions()** - регистрирует любые бек-эндовские ограничения, который будут использованы этим плагином.
+- **registerSettings()** - регистрирует любые ссылки конфигурации бэк энда, используемые этим плагином.
+- **registerFormWidgets()** - регистрирует любые виджеты бэк энда, используемые этим плагином.
+- **registerReportWidgets()** - регистрирует любые виджеты отчетов, в том числе виджеты дашборда. 
 
 <a name="basic-plugin-information" class="anchor" href="#basic-plugin-information"></a>
-### Basic plugin information
+### Основная информация плагина
 
-The `pluginDetails()` is a required method of the plugin registration class. It should return an array containing 4 keys: 
+Метод `pluginDetails()` является обязательным методом класса регистрации плагина. Он должен возвращать массив, состоящий из 4 ключей:
 
-- **name** - the plugin name.
-- **description** - the plugin description.
-- **author** - the plugin author name.
-- **icon** - a name of the plugin icon. October uses [Font Autumn icons](http://daftspunk.github.io/Font-Autumn/). Any icon names provided by this font are valid, for example **icon-glass**, **icon-music**.
+- **name** - имя плагина.
+- **description** - описание плагина.
+- **author** - имя автора плагина.
+- **icon** - имя иконки плагина. OctoberCMS пользует [Font Autumn icons](http://daftspunk.github.io/Font-Autumn/). Любое название иконки, предусмотренное этой коллекцией действительно, например **icon-glass**, **icon-music**.
 
 <a name="routing-initialization" class="anchor" href="#routing-initialization"></a>
-## Routing and initialization
+## Маршрутизация и инициализация
 
-Plugin registration files can contain two methods `boot()` and `register()`. With these methods you can do anything you like, like register routes or attach handlers to events.
+Файлы регистрации плагина могут содержать для метода `boot()` и `register()`. С этими методами Вы можете делать всё, что только пожелаете, допустим зарегистрировать маршруты или пришпилить обработчики к событиям.
 
-The `register()` method is called immediately when the plugin is registered. The `boot()` method is called right before a request is routed. So if your actions rely on another plugin, you should use the boot method. For example, inside the `boot()` method you can extend models:
+Метод `register()` вызывается непосредственно в тот момент, когда плагин регистрируется. Метод `boot()` вызывается прямо перед мршрутизацией запроса. Таким образом если ваши действия зависят от другого плагина, вы должны пользовать метод загрузки. Например, внутри метода `boot()` Вы можете расширить модели:
 
     public function boot()
     {
@@ -122,7 +122,7 @@ The `register()` method is called immediately when the plugin is registered. The
         });
     }
 
-Plugins can also supply a file named **routes.php** that contain custom routing logic, as defined in the [Laravel Routing documentation](http://laravel.com/docs/routing). For example:
+В плагины может быть также вставлен файл с именем **routes.php** в котором будет содержаться пользовательская логика маршрутизации, как это определено в [документация Laravel Маршрутизация](http://laravel.ru/docs/v4/routing). Например:
 
     Route::group(['prefix' => 'api_acme_blog'], function() {
 
@@ -131,9 +131,9 @@ Plugins can also supply a file named **routes.php** that contain custom routing 
     });
 
 <a name="component-registration" class="anchor" href="#component-registration"></a>
-## Component registration
+## Регистрация компонента
 
-[Components](components) must be registered in the [Plugin registration file](#registration-file). This tells the CMS about the Component and provides a **short name** for using it. An example of registering a component:
+[Components](components) должен быть зарегистрирован в [Файле регистрации плагина](#registration-file). Это укажет CMS о компоненте и предоставит **short name** для использования. Пример регистрации компонента:
 
     public function registerComponents()
     {
@@ -142,12 +142,12 @@ Plugins can also supply a file named **routes.php** that contain custom routing 
         ];
     }
 
-This will register the Todo component class with the default alias name **demoTodo**. More information on building components can be found at the [Building Components](components) article.
+Этот код регистрирует класс компонента ТуДу с именем алиаса **demoTodo** по умолчанию. Больше информации по созданию компонентов Вы можете найти на страницах [Создание компонентов](components).
 
 <a name="extending-twig" class="anchor" href="#extending-twig"></a>
-## Extending Twig
+## Расширения Twig
 
-Custom Twig filters and functions can be registered in the CMS with the `registerMarkupTags()` method of the plugin registration class. The next example registers two Twig filters and two functions.
+Пользовательские Twif фильтры и функции могут быть зарегистрированы в CMS с методом класса регистрации плагина `registerMarkupTags()`. Следующий пример регистрирует два Twig фильтра и две функции.
 
     public function registerMarkupTags()
     {
@@ -175,9 +175,9 @@ Custom Twig filters and functions can be registered in the CMS with the `registe
     }
 
 <a name="widget-registration" class="anchor" href="#widget-registration"></a>
-## Widget registration
+## Регистрация виджета
 
-Plugins can register [form widgets](../backend/widgets#form-widgets) by overriding the `registerFormWidgets()` method in the plugin registration class. The method should return an array containing the widget classes in the keys and widget name and context in the values. Example:
+Плагины могут регистрировать [формы виджетов](../backend/widgets#form-widgets) путем переопределения метода `registerFormWidgets()` в классе регистрации плагина. Этот метод должен возвращать массив, содержащий классы виджетов в ключах, имена виджетов и контекст в значениях. Например:
 
     public function registerFormWidgets()
     {
@@ -189,7 +189,7 @@ Plugins can register [form widgets](../backend/widgets#form-widgets) by overridi
         ];
     }
 
-Plugins can register [report widgets](../backend/widgets#report-widgets) by overriding the `registerReportWidgets()` method in the plugin registration class. The method should return an array containing the widget classes in the keys and widget name and context in the values. Example:
+Плагины могут регистрировать [отчет виджетов](../backend/widgets#report-widgets) путем переопределения метода `registerReportWidgets()` в классе регистрации плагина. Этот метод должен возвращать массив, содержащий классы виджетов в ключах, а также имя виджета и контекст в значениях. Пример:
 
     public function registerReportWidgets()
     {
@@ -205,12 +205,12 @@ Plugins can register [report widgets](../backend/widgets#report-widgets) by over
         ];
     }
 
-The **name** element defines the widget name for the Add Widget popup window. The **context** element defines the context where the widget could be used. October's report widget system allows to host the report container on any page, and the container context name is unique. The widget container on the Dashboard page uses the **dashboard** context.
+Тут, элемент **name** определяет имя виджета для кнопки Добавить Виджет во всплывающем окошке. Элемент **context** определяет контекст, где виджет может быть запользован. Система отчетов виджетов OctoberCMS позволяет разместить контейнер с отчетом на любой странице, и имя контейнера контекста должно быть уникальным. Контейнер виджета на дашбордовской странице пользует контекст **dashboard**.
 
 <a name="navigation-permissions" class="anchor" href="#navigation-permissions"></a>
-## Navigation and permissions
+## Навигация и ограничения
 
-Plugins can extend the back-end navigation menus and permissions by overriding methods of the [Plugin registration class](#registration-file). This section shows you how to add menu items and permissions to the back-end navigation area. An example of registering a top-level navigation menu item with two sub-menu items:
+Плагины могут расширить в бек-энде навигационные менюшки и ограничения путем переопределения методов [Класс регистрации плагина](#registration-file). В этом разделе показано, как добавить пункты меню и разрешения на области навигации в бек энде. Пример регистрации верхнего уровня навигации менюхи, с двумя пунктами подменю:
 
     public function registerNavigation()
     {
@@ -241,9 +241,9 @@ Plugins can extend the back-end navigation menus and permissions by overriding m
         ];
     }
 
-When you register the back-end navigation you can use localization strings for the `label` values. The localization is described in the [plugin localization](localization) article.
+При регистрации навигации в бек энде, можно пользовать строки локализации для значения `ярлыков`. Локализация описана в статье [плагин локализации](localization).
 
-The next example shows how to register back-end permission items. Permissions are defined with a permission key and description. In the back-end permission management user interface permissions are displayed as a checkbox list. Back-end controllers can use permissions defined by plugins for restricting the [user access](../backend/users) to pages or features.
+В следующем примере показано, как зарегистрировать элементы доступа в бек энде. Разрешения определяются с ключом разрешения и описанием. В бек энде для пользователя, который управляет доступом это показано в виде чекбоксов. Контроллеры бек энда могут использовать ограничения, определенные плагином, для ограничения [доступа пользователей](../backend/users) к страницам или функциям.
 
     public function registerPermissions()
     {
@@ -254,9 +254,9 @@ The next example shows how to register back-end permission items. Permissions ar
     }
 
 <a name="backend-settings" class="anchor" href="#backend-settings"></a>
-## Backend settings
+## Настройки бек энда
 
-The System / Settings page contains a list of links to the configuration pages. The list of links can be extended by plugins by overriding the `registerSettings()` method of the [Plugin registration class](#registration-file). When you create a configuration link you have two options - create a link to a specific back-end page, or create a link to a settings model. The next example shows how to create a link to a back-end page.
+Страница Система / Настройки содержит список всех параметров для конфигурирования страниц. Список этих параметров может быть увеличен настройками плагинов, путем переопределения метода `registerSettings()` в [Классе регистрации плагина](#registration-file). Когда Вы создаете конфигурационный линк, перед Вами стоит два варианта - создать линк на специфичную страницу бек энда, или же создать линк с настройками модели. Следующий пример показывает, как создать линк на страницу бек энда.
 
     public function registerSettings()
     {
@@ -272,7 +272,7 @@ The System / Settings page contains a list of links to the configuration pages. 
         ];
     }
 
-The following example creates a link to a settings model. Settings models is a part of the settings API which is described in the [Settings & Config](settings) article.
+А этот пример покажет Вам как создать линк на настройки модели. Настройки модели это часть настроек API, которая описывается в статье [Настройки и Конфигурация](settings).
 
     public function registerSettings()
     {
@@ -289,29 +289,29 @@ The following example creates a link to a settings model. Settings models is a p
     }
 
 <a name="migrations-version-history" class="anchor" href="#migrations-version-history"></a>
-## Migrations and version history
+## Миграции и история версий
 
-Plugins keep a change log inside the **/updates** directory to maintain version information and database structure. An example of an updates directory structure:
+Плагины хранят историю изменений в папке **/updates**. Также в этой директории хранится информация о текущей версии и информацию о структуре базы данных. Например, структура директории обновления может выглядить так:
 
     plugins/
       author/
         myplugin/
-          updates/                    <=== Updates directory
-            version.yaml              <=== Plugin version file
-            create_tables.php         <=== Database scripts
-            seed_the_database.php     <=== Migration file
-            create_another_table.php  <=== Migration file
+          updates/                    <=== Папка обновлений
+            version.yaml              <=== Файл версии плагина
+            create_tables.php         <=== Скрипты базы данных
+            seed_the_database.php     <=== Миграционный файл
+            create_another_table.php  <=== Миграционный файл
 
-The **version.yaml** file, called the *Plugin version file*, contains the version comments and refers to database scripts in the correct order. Please read the [Database structure](../database/structure) article for information about the migration files. This file is required if you're going to submit the plugin to the [Marketplace](../help/marketplace). An example Plugin version file:
+Файл **version.yaml** названный как *Файл версии плагина*, содержит комментарии к версии и четкий порядок вызова скриптов базы данных. Пожалуйста, прочтите [структура Базы Данных](../database/structure) для ознкомления с информацией по миграционным файлам. Также этот файл необходим если Вы собрались отправить плагин в [Marketplace](../help/marketplace). Пример файла версии плагина:
 
     1.0.1:
-        - First version
+        - Первая версия
         - create_tables.php
         - seed_the_database.php
-    1.0.2: Small fix that uses no scripts
-    1.0.3: Another minor fix
+    1.0.2: Небольшие правки, неиспользующие скрипты
+    1.0.3: Другие незначительные исправления
     1.0.4:
-        - Creates another table for this new feature
+        - Создание другой таблицы для новой фишки
         - create_another_table.php
 
-> **Note:** During the development, to apply plugin updates, log out of the back-end and sign in again. The plugin version history is applied when an administrator signs in to the back-end. Plugin updates are applied automatically for plugins installed from the Marketplace when you update the system.
+> **Запомните:** В процессе разработки, чтобы применить обновления плагина необходимо всего лишь выйти из бек энда и авторизоваться вновь. Вся история версии плагина применяется, когда администратор авторизуется в бек энде. Также обновления плагина применяются автоматически, для плагинов, установленных на маркетплайсе, когда Вы обновляете систему. 
