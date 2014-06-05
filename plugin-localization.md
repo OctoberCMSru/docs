@@ -1,28 +1,28 @@
-# Localization
+# Перевод(локализация)
 
-- [Localization directory and file structure](#file-structure)
-- [Accessing localization strings](#accessing-strings)
-- [Overriding localization strings](#overriding)
+- [Папка с переводом(локализацией) и структура файлов](#file-structure)
+- [Доступ к строкам перевода(локализации)](#accessing-strings)
+- [Переопределение строк перевод(локализации)а](#overriding)
 
-Plugins can have localization files in the **lang** subdirectory of the plugin directory. Plugins' localization files are registered automatically. The localization strings are supported automatically in the back-end user interface menus, form labels, etc. - if you provide the localization key instead of a real string, the system will try to load it from the localization file. In other cases you need to load the localization string [with the API](#accessing-strings). 
+Плагины могут иметь файлы перевода в подпапках папки **lang** в корневой папки плагина. Файлы перевода плагинов регистрируются автоматически. Строки с переводам появляются автоматически в интерфейсе меню, формах лэйблов и других элементах в бекэнде. Если Вы предоставили ключ перевода завместо реальной строки - система будет пытаться загрузить его с файла перевода(локализации). В других случаях, Вам необходмо будет загрузить строку перевода [с API](#accessing-strings). 
 
 <a name="file-structure" class="anchor" href="#file-structure"></a>
-## Localization directory and file structure
+## Папка перевода и структура файлов
 
-Below is an example of the of the plugin's lang directory:
+Ниже приведен пример содержания папки плагина:
 
     app
       plugins
         acme
-          todo              <==== Plugin directory
-            lang            <==== Localization directory
-              en            <==== Language directory
-                lang.php    <==== Localization file
+          todo              <==== Папка плагина
+            lang            <==== Папка перевода
+              en            <==== Папка языка перевода
+                lang.php    <==== Файл перевода
               fr
                 lang.php
 
 
-The **lang.php** file should define and return an array of any deepness, for example:
+Файл **lang.php** может возвратить массив любой глубины, например:
 
     <?php
 
@@ -34,16 +34,16 @@ The **lang.php** file should define and return an array of any deepness, for exa
     }
 
 <a name="accessing-strings" class="anchor" href="#accessing-strings"></a>
-## Accessing localization strings
+## Доступ к строкам локализации
 
-The localization strings can be loaded with the `Lang` class. The parameter it accepts is the localization key string that consists of the plugin name, the localization file name and the path to the localization string inside the array returned from the file. The next example loads the **app.name** string from the plugins/acme/blog/lang/en/lang.php file (the language is set with the `locale` parameter in the `app/config/app.php` configuration file):
+Строки локализации могут быть згружены с помощью класса `Lang`.  Ключ строки перевода может принять параметр, который состоит из имени плагина, имени файла локализации и даже пути к строке локализации внутри массива, возвращенного из файла. Следующих пример загружает строку **app.name** с файла plugins/acme/blog/lang/en/lang.php (язык здесь установлен с помощью параметра `locale` в конфигурационном файле `app/config/app.php`):
 
     echo Lang::get('acme.blog::lang.app.name');
 
 <a name="overriding" class="anchor" href="#overriding"></a>
-## Overriding localization strings
+## Переопределение локализационных строк
 
-System users can override plugin localization strings without altering the plugins' files. This is done by adding localization files to the app/lang directory. For example, to override the lang.php file of the **acme/blog** plugin you should create the file in the following location:
+Пользователи системы могут запросто переопределить строки локализации плагина без изменения файлов плагина. Сделать это можно путем добавления локализационных файлов в директорию app/lang. Для примера, двайте переопределим строки файла lang.php из папки плагина **acme/blog** создав файл в следующей папке:
 
     app/
       lang/
@@ -52,7 +52,7 @@ System users can override plugin localization strings without altering the plugi
             en/
               lang.php
 
-The file could contain only strings you want to override, there is no need to replace the entire file. Example:
+Файл может содержать только строку, которую нам требуется переопределить, поэтому нет необходимости полностью заменять весь файл. Пример:
 
     <?php
 
