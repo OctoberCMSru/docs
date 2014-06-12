@@ -1,4 +1,3 @@
-# CMS Pages
 
 - [Page configuration](#configuration)
 - [Dynamic pages](#dynamic-pages)
@@ -66,7 +65,7 @@ You can also use regular expressions to validate parameters. To add a validation
 > **Note:** Subdirectories do not affect page URLs - the URL is defined only with the **url** parameter.
 
 <a name="dynamic-pages" class="anchor" href="#dynamic-pages"></a>
-## Dynamic pages
+## Динамические страницы
 
 Inside the [Twig section](themes#twig-section) of a page template you can use any native [Twig](http://twig.sensiolabs.org/documentation) functions, filters and tags as well as the [Twig extensions provided by October](markup). Any dynamic page requires **variables**. In October page variables can be prepared by the page or layout [PHP section](themes#php-section) or by [Components](components). In this article we describe how to prepare variables in the PHP section.
 
@@ -110,7 +109,7 @@ The next example is more complicated. It shows how to load a blog post collectio
 The default variables and Twig extensions provided by October are described in the [Markup Guide](markup).
 
 <a name="handling-forms" class="anchor" href="#handling-forms"></a>
-### Handling forms
+### Обработка форм
 
 You can handle standard forms with handler methods defined in the page or layout [PHP section](themes#php-section) (handling the AJAX requests is explained in the [AJAX Framework](ajax) article). Use the [form_open()](markup#standard-form) function to define a form that refers to an event handler. Example:
 
@@ -136,17 +135,17 @@ If you want to refer to a handler defined in a specific [component](components),
     {{ form_open({ request: 'myComponent::onHandleForm' }) }}
 
 <a name="404-page" class="anchor" href="#404-page"></a>
-## 404 page
+## Страница 404
 
 If the theme contains a page with the URL `/404` it is displayed when the system can't find a requested page.
 
 <a name="error-page" class="anchor" href="#error-page"></a>
-## Error page
+## Страница ошибки
 
 By default any errors will be shown with a detailed error page containing the file contents, line number and stack trace where the error occurred. You can display a friendly error page by setting the configuration value `customErrorPage` to **true** in the `app/config/cms.php` script and creating a page with the URL `/error`.
 
 <a name="injecting-assets" class="anchor" href="#injecting-assets"></a>
-## Injecting page assets programmatically
+## Программное включение асетсов на страницу
 
 If needed, you can inject assets (CSS and JavaScript files) to pages with the controller's `addCss()` and `addJs()` methods. It could be done in the `onStart()` function defined in the [PHP section](themes#php-section) of a page or [layout](layout) template. Example:
 

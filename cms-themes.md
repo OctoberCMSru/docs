@@ -1,76 +1,74 @@
-# CMS Themes
 
-- [Introduction](#introduction)
-- [Subdirectories](#subdirectories)
-- [Template structure](#structure)
+- [Введение](#introduction)
+- [Подпапки](#subdirectories)
+- [Структура шаблона](#structure)
 
-Themes define the appearance of your website or web application built with October. October themes are completely file-based and can be managed with any version control system, for example Git. This page gives you the high-level description of October themes. You fill find more details about [pages](pages), [partials](partials), [layouts](layouts) and [content files](content) in the corresponding articles.
+Темы определяют внешний вид вашего сайта или веб-приложения, созданного на October. Темы в October все полностью в файлах и могут управляться с помощью любой системы контроля версий, например - Git. Эта страница дает вам высокоуровневое описание тем в October. Вы можете найти больше информации о [страницах](./cms-pages.md), [чанках](./cms-partials.md), [макетах](./cms-layouts.md) и [файлах содержимого](./cms-content.md) в соответствующих статьях.
 
-> The active CMS theme is set with the `activeTheme` parameter in the `app/config/cms.php` file.
+> Активная тема CMS устанавливается с помощью параметра `activeTheme` в файле `app/config/cms.php`.
 
 <a name="introduction" class="anchor" href="#introduction"></a>
-## Introduction
+## Введение
 
-Themes are directories that reside in the **/themes** directory by default. Themes can contain the following objects.
+Темы - это папки, которые находятся в папке **/themes** по умолчанию. Темы могут содержать следующие объекты.
 
-- [Pages](pages) - represent the website pages.
-- [Partials](partials) - contain reusable chunks of HTML markup.
-- [Layouts](layouts) - define the page scaffold.
-- [Content files](content) - text, HTML or [Markdown](http://daringfireball.net/projects/markdown/syntax) blocks that can be edited separately from the page or layout.
-- **Asset files** - are resource files like images, CSS and JavaScript files.
+- [Страницы](./cms-pages.md) - представляют собой страницы сайта.
+- [Чанки](./cms-partials.md) - содержит повторно используемые куски HTML-разметки.
+- [Макеты](./cms-layouts.md) - определяет каркас страницы.
+- [Содержимое](./cms-content.md) - текст, HTML или [Markdown](http://daringfireball.net/projects/markdown/syntax) блоки, которые можно редактировать отдельно от страницы или макета.
+- **Асетсы** - файлы-ресурсы такие как изображения, CSS и JavaScript.
 
-Below you can see an example theme directory structure. Each October theme is represented with a separate directory. The example displays the "website" theme directory.
+Ниже вы можете видеть пример структуры папок темы. Каждая тема в October представлена отдельной папкой. Пример показывает папку темы "website".
 
     themes/
-      website/              <== Theme starts here
-        pages/              <== Pages directory
+      website/              <== Тема начинается здесь
+        pages/              <== Папка со страницами 
           home.htm
-        layouts/            <== Layouts directory
+        layouts/            <== Папка с макетами
           default.htm
-        partials/           <== Partials directory
+        partials/           <== Папка с чанками
           sidebar.htm
-        content/            <== Content directory
+        content/            <== Папка с контентом
           intro.htm
-        assets/             <== Assets directory
+        assets/             <== Папка с асетсами
           css/
             my-styles.css
           js/
           images/
 
 <a name="subdirectories" class="anchor" href="#subdirectories"></a>
-## Subdirectories
+## Подпапки
 
-October supports a single level subdirectories for pages, partials, layouts and content files (the **assets** directory can have any structure). This simplifies organizing large websites. In the example directory structure below you can see that the pages and partials directories contain the **blog** subdirectory and the content directory contains the **home** subdirectory.
+October поддерживает одноуровневые подпапки для страниц, чанков, макетов и файлов содержимого (папка **assets** может содержать любую структуру). Это упрощает организацию крупных сайтов. В примере структуры папок ниже вы можете выдеть, что папки страниц и чанков содержат подпапку **blog**, а папка content содержит подпапку **home**.
 
     themes/
       website/
         pages/
           home.htm
-          blog/                 <== Subdirectory
+          blog/                 <== Подпапка
             archive.htm
             category.htm
         partials/
           sidebar.htm
-          blog/                 <== Subdirectory
+          blog/                 <== Подпапка
             category-list.htm
         content/
           footer-contacts.txt
-          home/                 <== Subdirectory
+          home/                 <== Подпапка
             intro.htm
         ...
-
-To refer to a partial or a content file from a subdirectory, specify the subdirectory name before the template name. Example of rendering a partial from a subdirectory:
+Чтобы сослаться на чанк или файл содержимого в подпапке, укажите имя подпапки перед имене шаблона. Пример отображения чанка из подпапки.
 
     {% partial "blog/category-list" %}
 
-> **Note:** The template paths are always absolute. If in a partial you render another partial from the same subdirectory you still need to specify the subdirectory name.
+> **Важно:** Пути к шаблонам всегда абсолютные. Если в чанке вы отображаете другой чанк из той же подпапки, вам все равно нужно указать имя подпапки.
 
 <a name="structure" class="anchor" href="#structure"></a>
-## Template structure
+## Структура шаблона
 
-Pages, partials and layout templates can include up to 3 sections: **configuration**, **PHP code**, and **Twig markup**.
-Sections are separated with the `==` sequence.
-For example:
+Шаблоны страниц, чанков и макетов могут включать в себя 3 раздела: **конфигурация**, **PHP код**, and **Twig разметка**.
+Разделы отделяются с помощью символов `==`.
+Пример:
 
     url = "/blog"
     layout = "default"
@@ -87,9 +85,9 @@ For example:
     {% endfor %}
 
 <a name="configuration-section" class="anchor" href="#configuration-section"></a>
-### Configuration section
+### Раздел конфигурации
 
-The configuration section sets the template parameters. Supported configuration parameters are specific for different CMS templates and described in their corresponding documentation articles. The configuration section uses the simple [INI format](http://en.wikipedia.org/wiki/INI_file), where string parameter values are enclosed within quotes.  Example configuration section for a page template:
+Раздел конфигруации устанавливает параметры шаблона. Поддерживаемые параметры конфигурации специфичны для различных шаблонов CMS и описаны в соответствующих статьях документации. Раздел конфигурации испоьзует простой [INI формат](http://en.wikipedia.org/wiki/INI_file), где значения строковых параметров заключены в кавычки. Пример раздела конфигурации для шаблона страницы:
 
     url = "/blog"
     layout = "default"
@@ -98,9 +96,9 @@ The configuration section sets the template parameters. Supported configuration 
     parameter = "value"
 
 <a name="php-section" class="anchor" href="#php-section"></a>
-### PHP code section
+### Раздел PHP кода
 
-The code in the PHP section executes every time before the template is rendered. The PHP section is optional for all CMS templates and its contents depends on the template type where it is defined. The PHP code section can contain optional open and close PHP tags to enable syntax highlighting in text editors. The open and close tags should always be specified on another line to the section separator `==`.
+Код в разделе PHP выполняется каждый раз перед тем, как шаблон будет отображен. Раздел PHP не обязателен для всех шаблонов CMS и его содержимое зависит от типа шаблона, где он определен. Раздел PHP кода может содержать необязательные открывающие и закрывающие PHP теги, чтобы поддерживать подстветку синтаксиса в редакторах. Открывающие и закрывающие теги всегда должны быть заданы на других строках, отличных от строк с разделителями разделов `==`.
 
     url = "/blog"
     layout = "default"
@@ -118,9 +116,11 @@ The code in the PHP section executes every time before the template is rendered.
         {{ post.content }}
     {% endfor %}
 
-> **Note:** In the PHP section you can only define functions and refer to namespaces with the PHP `use` keyword. No other PHP code is allowed in the PHP section. This is because the PHP section is converted to a PHP class when the page is parsed.
+> **Важно:** 
 
-Example namespace reference:
+В разделе PHP вы можете задать только функции и сослаться на пространство имен с помощью ключевого слова `use`. Другой PHP код не разрешен в разделе PHP. Это потому что раздел PHP конвертируется в класс, когда обрабатывается страница.
+
+Пример ссылки на пространство имен:
 
     url = "/blog"
     layout = "default"
@@ -136,6 +136,6 @@ Example namespace reference:
     ==
 
 <a name="twig-section" class="anchor" href="#twig-section"></a>
-### Twig markup section
+### Раздел Twig разметки
 
-The Twig section defines the markup to be rendered by the template. In the Twig section you can use [Twig functions, filters and tags provided by October](markup) and all the native [Twig](http://twig.sensiolabs.org/documentation) functions, tags and filters. The content of the Twig section depends on the template type (page, layout or partial). You will find more information about specific Twig objects further in the documentation.
+Раздел Twig определяет разметку, которая будет отображена согласно шаблону. В разделе Twig вы можете использовать [функции, фильтры и теги Twig, предоставляемые October](./cms-markup.md) и все оригинальные функции, фильтры и теги [Twig](http://twig.sensiolabs.org/documentation). Содержимое в разделе Twig завивит от типа шаблона (страница, макет или чанк). Вы можете найти больше информации о конкретных объектах Twig далее в документации.
