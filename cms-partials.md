@@ -1,42 +1,42 @@
-# CMS Partials
+# Чанки (Partials)
 
-- [Introduction](#introduction)
-- [Rendering partials](#rendering-partials)
-- [Passing variables to partials](#variables)
+- [Введение](#introduction)
+- [Вывод чанков](#rendering-partials)
+- [Параметры чанков](#variables)
 
-Partials contain reusable chunks of Twig markup that can be used anywhere throughout the website. Partials are extremely useful for page elements that repeat on different pages or layouts. A good partial example is a page footer which is used in different page [layouts](layouts). Also, partials are required for updating the page content with [AJAX](ajax).
+Чанки содержат повторно используемые куски Twig-разметки, которые могут быть использованы в любом месте сайта. Чанки чрезвычайно полезны для элементов, которые повторяются на разных страницах или макетах. Хороший пример чанка - футер, который используется в разных [макетах](layouts). Кроме того, чанки необходимы для обновления содержимого страницы с использованием [AJAX](ajax)
 
 <a name="introduction" class="anchor" href="#introduction"></a>
-## Introduction
+## Введение
 
-Partial templates files reside in the **/partials** subdirectory of a theme directory. Partial files should have the **htm** extension. Example of a simplest possible partial:
+Файлы чанков находятся в подпапке **/partials** темы. Файлы чанков должны иметь **htm** расширение. Пример простейшего чанка:
 
     <p>This is a partial</p>
-
-The [Configuration](themes#configuration-section) section is optional for partials and can contain the optional **description** parameter which is displayed in the back-end user interface. The next example shows a partial with description:
+    
+[Раздел конфигурации](themes#configuration-section) необязателен для чанков и может содержать опциональный параметр **description**, который будет отображаться в админке. Пример чанка с описанием:
 
     description = "Demo partial"
     ==
     <p>This is a partial</p>
 
 <a name="rendering-partials" class="anchor" href="#rendering-partials"></a>
-## Rendering partials
+## Вывод чанков
 
-The `{% partial "partial-name" %}` Twig tag renders a partial. The tag has a single required parameter - the partial file name without the extension. Remember that if you refer a partial from a [subdirectory](themes#subdirectories) you should specify the subdirectory name. The `{% partial %}` tag can be used inside a page, layout or another partial. Example of a page referring to a partial:
+Twig-тег `{% partial "partial-name" %}` выводит чанк. Этот тег имеет один обязательный параметр - имя файла чанка без расширения. Помните, если хотите использовать чанк из [подпапки](themes#subdirectories), то вы должны указать имя подпкапки `{% partial "subdirectory/partial-name" %}`. Тег `{% partial %}` может использоваться внутри страницы, макета или же другого чанка. Пример страницы, использующей чанк:
 
     <div class="sidebar">
         {% partial "sidebar-contacts" %}
     </div>
 
 <a name="variables" class="anchor" href="#variables"></a>
-## Passing variables to partials
+## Параметры чанков
 
-You will find that you often need to pass variables to a partial from the external code. This makes partials even more useful. For example, you can have a partial that renders a list of blog post. If you can pass the post collection to the partial, the same partial could be used on the blog archive page, on the blog category page and so on. You can pass parameters to partials by specifying them after the partial name in the `{% partial %}` tag:
+Вы увидите, что вам часто приходится передавать переменные чанкам из внешнего кода. Это делает чанки еще более полезными. Например, у вас есть чанк, выводящий список постов блога и параметром этого чанка является массив постов. В таком случае, вы можете использовать этот чанк в архиве блога, на странице категории блога и так далее. Вы можете передавать параметры чанков, указав их после имени чанка в теге `{% partial %}`:
 
     <div class="sidebar">
         {% partial "sidebar-contacts" city="Vancouver" country="Canada" %}
     </div>
-
-Inside the partial, parameters can be accessed like any other markup variable:
+    
+Внутри чанка, получить доступ к параметру можно также, как и к любой другой переменной:
 
     <p>Country: {{ country }}, city: {{ city }}.</p>
