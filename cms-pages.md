@@ -1,38 +1,38 @@
 
-- [Page configuration](#configuration)
-- [Dynamic pages](#dynamic-pages)
-- [404 page](#404-page)
-- [Error page](#error-page)
-- [Injecting page assets programmatically](#injecting-assets)
+- [Конфигурация страницы](#configuration)
+- [Динамические страницы](#dynamic-pages)
+- [404 стр.](#404-page)
+- [Страница ошибок](#error-page)
+- [Программная активация страниц](#injecting-assets)
 
-All websites have pages. In October pages are represented with page templates. Page template files reside in the **/pages** subdirectory of a theme directory. Page file names do not affect the routing, but it's a good idea to name your pages accordingly to the page function. The files should have the **htm** extension. The [Configuration](themes#configuration-section) and [Twig](themes#twig-section) template sections are required for pages but the [PHP section](themes#php-section) is optional. Below you can see the simplest home page example.
+Все сайты имеют страницы. В October страницы представлены шаблонами страниц. Файлы шаблонов страниц находятся в подкаталоге **/pages** каталога **theme**. Имена файлов страниц не влияют на маршрутизацию, но рекомендуется назначать имена страниц соответствующим функциям страницы. Файлы должны иметь расширение **htm**. Для страниц требуются разделы [Конфигурация](./cms-themes.md#configuration-section) и [Twig](./cms-themes.md#twig-section), но [Раздел PHP кода](./cms-themes.md#php-section) является необязательным. Ниже вы можете увидеть простейший пример домашней страницы.
 
     url = "/"
     ==
     <h1>Hello, world!</h1>
 
 <a name="configuration" class="anchor" href="#configuration"></a>
-## Page configuration
+## Конфигурация страницы
 
-Page configuration is defined in the [Configuration Section](themes#configuration-section) of the page template file. The page configuration defines the page parameters, required for the routing and rendering the page and page [Components](components), which are explained in another article. The following configuration parameters are supported for pages:
+Конфигурация страницы определяется в [Секция конфигурации] (./cms-themes.md#configuration-section) файла шаблона страницы. Конфигурация страницы определяет параметры страницы, необходимые для маршрутизации и визуализации страницы и страницы [Компоненты](./cms-components.md), которые описаны в другой статье. Для страниц поддерживаются следующие параметры конфигурации:
 
-- **url** - the page URL, required. The URL syntax is described below.
-- **title** - the page title, required.
-- **layout** - the page [layout](layouts), optional. If specified, should contain the name of the layout file, without extension, for example: `default`.
-- **description** - the page description for the back-end interface, optional.
+- **url** - необходимо указать URL-адрес страницы. Синтаксис URL описан ниже.
+- **title** - заголовок страницы, обязателен.
+- **layout** - [макет](./cms-layouts.md) страница, необязательная. Если указано, должно содержать имя файла макета, без расширения, например: `default`.
+- **description** - описание страницы для внутреннего интерфейса, необязательно.
 
 <a name="url-syntax" class="anchor" href="#url-syntax"></a>
-### URL syntax
+### Синтаксис URL
 
-The page URL is defined with the **url** configuration parameter. URLs should start with the forward slash character and can contain parameters. URLs without parameters are fixed and strict. In the following example the page URL is `/blog`.
+URL-адрес страницы определяется параметром конфигурации **url**. URL-адреса должны начинаться с символа прямой косой черты и могут содержать параметры. URL-адреса без параметров являются фиксированными и строгими. В следующем примере URL-адрес страницы `/blog`.
 
     url = "/blog"
 
-URLs with parameters are more flexible. A page with the URL pattern defined in the following example would be displayed for any address like `/blog/post/something`. URL parameters can be accessed by October components or from the page [PHP code](themes#php-section) section.
+URL-адреса с параметрами являются более гибкими. Страница с шаблоном URL, определенным в следующем примере, будет отображаться для любого адреса, такого как `/blog/post/something`. Параметры URL могут быть доступны из компонента October  или со страницы [PHP code](./cms-themes.md#php-section).
 
     url = "/blog/post/:post_id"
 
-This is how you can access the URL parameter from the page PHP section (see the [Dynamic pages](#dynamic-pages) section for more details):
+Вот как вы можете получить доступ к параметру URL из раздела PHP страницы (более подробную информацию см. В разделе [Динамические страницы](#dynamic-pages):
 
     url = "/blog/post/:post_id"
     ==
@@ -42,37 +42,37 @@ This is how you can access the URL parameter from the page PHP section (see the 
     }
     ==
 
-Parameter names should be compatible with PHP variable names. To make a parameter optional add the question mark after its name:
+Имена параметров должны быть совместимы с именами переменных PHP. Чтобы сделать параметр необязательным, добавьте знак вопроса после его имени:
 
     url = "/blog/post/:post_id?"
 
-Parameters in the middle of the URL cannot be optional. In the next example the `:post_id` parameter is marked as optional, but is processed as required.
+Параметры в середине URL-адреса не могут быть необязательными. В следующем примере параметр `:post_id` помечается как необязательный, но обрабатывается по мере необходимости.
 
     url = "/blog/:post_id?/comments"
 
-Optional parameters can have default values which are used as fallback values in case the real parameter value is not presented in the URL. Default values cannot contain any pipe symbols or question marks. The default value is specified after the **question mark**. In the next example the `category_id` parameter would be `10` for the URL `/blog/category`.
+Необязательные параметры могут иметь значения по умолчанию, которые используются как запасные значения в случае, если значение реального параметра не указано в URL-адресе. Значения по умолчанию не могут содержать символы труб или вопросительные знаки. Значение по умолчанию указано после **вопросительного знака**. В следующем примере параметр `category_id` будет иметь значение `10` для URL `/blog/category`.
 
     url = "/blog/category/:category_id?10"
 
-You can also use regular expressions to validate parameters. To add a validation expression, add the pipe symbol after the parameter name (or the question mark) and specify the expression. The forward slash symbol is not allowed in the expressions. Examples:
+Вы также можете использовать регулярные выражения для проверки параметров. Чтобы добавить выражение проверки, добавьте символ конвейеризации после имени параметра (или вопросительного знака) и укажите выражение. Символ прямой косой черты в выражениях недопустим. Примеры:
 
-    url = "/blog/:post_id|^[0-9]+$/comments" - this will match /blog/post/10/comments
+    url = "/blog/:post_id|^[0-9]+$/comments" - это будет соответствовать /blog/post/10/comments
     ...
-    url = "/blog/:post_id|^[0-9]+$" - this will match /blog/post/3
+    url = "/blog/:post_id|^[0-9]+$" - это будет соответствовать /blog/post/3
     ...
-    url = "/blog/:post_name?|^[a-z0-9\-]+$" - this will match /blog/my-blog-post
+    url = "/blog/:post_name?|^[a-z0-9\-]+$" - это будет соответствовать /blog/my-blog-post
 
-> **Note:** Subdirectories do not affect page URLs - the URL is defined only with the **url** parameter.
+> **Заметка:** Подкаталоги не влияют на URL-адреса страниц - URL-адрес определяется только с параметром **url**.
 
 <a name="dynamic-pages" class="anchor" href="#dynamic-pages"></a>
 ## Динамические страницы
 
-Inside the [Twig section](themes#twig-section) of a page template you can use any native [Twig](http://twig.sensiolabs.org/documentation) functions, filters and tags as well as the [Twig extensions provided by October](markup). Any dynamic page requires **variables**. In October page variables can be prepared by the page or layout [PHP section](themes#php-section) or by [Components](components). In this article we describe how to prepare variables in the PHP section.
+Внутри раздела [Twig](./cms-themes.md#twig-section) шаблона страницы вы можете использовать любые собственные функции [Twig](http://twig.sensiolabs.org/documentation), фильтры и тэги, а также [расширения Twig Предоставлено в October](./cms-markup.md). Любая динамическая страница требует **переменных**. В October страницы могут быть подготовлены по странице или макету [разделу PHP кода](./cms-themes.md#php-section) или по [компонентам](./cms-components.md). В этой статье мы расскажем, как подготовить переменные в разделе PHP.
 
 <a name="page-cycle-handlers" class="anchor" href="#page-cycle-handlers"></a>
-### Page execution cycle handlers
+### Обработчики цикла страницы
 
-There are two special functions that could be defined in the PHP section of pages and layouts: `onStart()` and `onEnd()`. The `onStart()` function is executed in the beginning of the page execution. The `onEnd()` function is executed before the page is rendered and after the page [components](components) are executed. In the onStart and onEnd functions you can inject variables to the Twig environment. Use the `array notation` to pass variables to the page:
+В разделе PHP страниц и макетов можно определить две специальные функции: `onStart()` и `onEnd()`. Функция `onStart()` выполняется в начале рендеренга страницы. Функция `onEnd()` выполняется перед отображением страницы и после рендеренга страницы [компонента](./cms-components.md). В onStart и onEnd вы можете вводить переменные в среду Twig. Используйте `array notation` для передачи переменных на страницу:
 
     url = "/"
     ==
@@ -84,8 +84,7 @@ There are two special functions that could be defined in the PHP section of page
     ?>
     ==
     <h3>{{ hello }}</h3>
-
-The next example is more complicated. It shows how to load a blog post collection from the database and display on the page (the Acme\Blog plugin is imaginary).
+Следующий пример более сложен. Он показывает, как загрузить коллекцию сообщений в блоге из базы данных и отобразить на странице (плагин Acme\Blog например).
 
     url = "/blog"
     ==
@@ -98,7 +97,7 @@ The next example is more complicated. It shows how to load a blog post collectio
     }
     ?>
     ==
-    <h2>Latest posts</h2>
+    <h2>Последние посты</h2>
     <ul>
         {% for post in posts %}
             <h3>{{ post.title }}</h3>
@@ -106,48 +105,47 @@ The next example is more complicated. It shows how to load a blog post collectio
         {% endfor %}
     </ul>
 
-The default variables and Twig extensions provided by October are described in the [Markup Guide](markup).
+Переменные по умолчанию и расширения Twig, предоставленные October, описаны в [руководстве по разметке](./cms-markup.md).
 
 <a name="handling-forms" class="anchor" href="#handling-forms"></a>
 ### Обработка форм
 
-You can handle standard forms with handler methods defined in the page or layout [PHP section](themes#php-section) (handling the AJAX requests is explained in the [AJAX Framework](ajax) article). Use the [form_open()](markup#standard-form) function to define a form that refers to an event handler. Example:
+Вы можете обрабатывать стандартные формы с помощью методов-обработчиков, определенных на странице или макете [PHP section](./cms-themes.md#php-section) (обработка запросов AJAX объясняется в статье [AJAX Framework](./cms-ajax.md)). Используйте функцию `form_open()` (./cms-markup.md#standard-form), чтобы определить форму, которая ссылается на обработчик события. Пример:
 
     {{ form_open({ request: 'onHandleForm' }) }}
-        Please enter a string: <input type="text" name="value"/>
+        Введите строку: <input type="text" name="value"/>
         <input type="submit" value="Submit me!"/>
     {{ form_close() }}
-    <p>Last submitted value: {{ lastValue }}</p>
+    <p>Последняя отправленное значение: {{ lastValue }}</p>
 
-The onHandleForm function can be defined in the page or layout [PHP section](themes#php-section) in the following way:
+Функция onHandleForm может быть определена на странице или макете [разделе PHP кода](./cms-themes.md#php-section) следующим образом:
 
     function onHandleForm()
     {
         $this['lastValue'] = post('value');
     }
 
-The handler loads the value with the `post()` function and initializes the page `lastValue` attribute variable which is displayed below the form in the first example.
+Обработчик загружает значение с помощью функции `post()` и инициализирует переменную атрибута страницы `lastValue`, которая отображается под формой в первом примере.
 
-> **Note:** If a handler with a same name is defined in the page layout, page and a page [component](components) October will execute the page handler. If a handler is defined in a component and a layout, the layout handler will be executed. The handler precedence is: page, layout, component.
-
-If you want to refer to a handler defined in a specific [component](components), use the component name or alias in the handler reference:
+> **Заметка:** Если обработчик с таким же именем определен в макете, странице и странице [компонента](./cms-components.md), October  выполнит обработчик страницы. Если обработчик определен в компоненте и макете, будет выполнен обработчик макета. Приоритет обработчика: страница, макет, компонент.
+Если вы хотите обратиться к обработчику, определенному в конкретном [компоненте](./cms-components.md), используйте имя компонента или псевдоним в ссылке обработчика:
 
     {{ form_open({ request: 'myComponent::onHandleForm' }) }}
 
 <a name="404-page" class="anchor" href="#404-page"></a>
 ## Страница 404
 
-If the theme contains a page with the URL `/404` it is displayed when the system can't find a requested page.
+Если тема содержит страницу с URL-адресом `/404`, она отображается, когда система не может найти запрашиваемую страницу.
 
 <a name="error-page" class="anchor" href="#error-page"></a>
 ## Страница ошибки
 
-By default any errors will be shown with a detailed error page containing the file contents, line number and stack trace where the error occurred. You can display a friendly error page by setting the configuration value `customErrorPage` to **true** in the `app/config/cms.php` script and creating a page with the URL `/error`.
+По умолчанию любые ошибки будут отображаться с подробной страницей ошибки, содержащей содержимое файла, номер строки и трассировку стека, где произошла ошибка. Вы можете отобразить страницу дружественных ошибок, установив значение конфигурации `customErrorPage` в **true** в скрипте `app/config/cms.php` и создав страницу с URL-адресом `/error`.
 
 <a name="injecting-assets" class="anchor" href="#injecting-assets"></a>
 ## Программное включение асетсов на страницу
 
-If needed, you can inject assets (CSS and JavaScript files) to pages with the controller's `addCss()` and `addJs()` methods. It could be done in the `onStart()` function defined in the [PHP section](themes#php-section) of a page or [layout](layout) template. Example:
+При необходимости вы можете вставлять ресурсы (файлы CSS и JavaScript) на страницы с помощью методов контроллера `addCss()` и `addJs()`. Это можно сделать в функции `onStart()`, определенной в секции [PHP](./cms-themes.md#php-section) шаблона страницы или [макета](./cms-layouts.md). Пример:
 
     function onStart()
     {
@@ -155,9 +153,9 @@ If needed, you can inject assets (CSS and JavaScript files) to pages with the co
         $this->addJs('assets/js/app.js');
     }
 
-If the path specified in the `addCss()` and `addJs()` method argument begins with a slash (/) then it will be relative to the website root. If the asset path does not begin with a slash then it is relative to the theme. 
+Если путь, указанный в аргументе метода `addCss()` и `addJs()`, начинается со слэша (/), то он будет относиться к корню сайта. Если путь к активам не начинается с косой черты, то он относится к теме.
 
-In order to output the injected assets on pages or [layouts](layout) use the [{% styles %}](..//cms/markup#styles-tag) and [{% scripts %}](../cms/markup#scripts-tag) tags. Example:
+Чтобы выводить внедренные активы на страницы или [макеты](./cms-layouts.md), используйте тег [{%styles%}](./cms-markup.md#styles) и [{%scripts%}](./cms-markup.md#scripts-tag). Пример:
 
     <head>
         ...
